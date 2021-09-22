@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
+rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
   def show
     post = Post.find(params[:id])
-    
     render json: post
   end
 
@@ -18,6 +18,10 @@ class PostsController < ApplicationController
 
   def post_params
     params.permit(:category, :content, :title)
+  end
+
+  def render_unprocessable_entity_response
+    render json: {errors: invalid_record.errors.full_message}, status: :unprocessable_entity
   end
 
 end

@@ -1,4 +1,5 @@
 class AuthorsController < ApplicationController
+  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   
   def show
     author = Author.find(params[:id])
